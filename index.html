@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Developer Writing Guide — Technical Writing Best Practices | BeLikeNative</title>
+<meta name="description" content="Interactive guide to writing better technical documentation. 10 sections with best practices, good vs bad examples, quizzes, and live writing feedback.">
+<meta name="keywords" content="developer writing guide,technical writing best practices,how to write good documentation,API docs,README writing">
+<meta property="og:title" content="Developer Writing Guide — Technical Writing Best Practices | BeLikeNative">
+<meta property="og:description" content="Master technical writing: README structure, API docs, error messages, commit messages, and more. Interactive quizzes included.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://theluckystrike.github.io/bln-writing-guide/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://theluckystrike.github.io/bln-writing-guide/">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e0e0e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.7;min-height:100vh}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#0e0e16;border-right:1px solid #1e1e2e;padding:20px 0;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:10}
+.sidebar-header{padding:16px 20px;border-bottom:1px solid #1e1e2e;margin-bottom:8px}
+.sidebar-title{font-size:1rem;background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.progress-bar{height:4px;background:#1e1e2e;border-radius:2px;margin-top:10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#f59e0b,#22c55e);transition:width .4s;width:0%}
+.progress-text{color:#6b7280;font-size:0.75rem;margin-top:4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;font-size:0.88rem;color:#9ca3af;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{background:#12121a;color:#e0e0e8}
+.nav-item.active{color:#f59e0b;border-left-color:#f59e0b;background:#12121a}
+.nav-item.completed{color:#22c55e}
+.nav-check{width:18px;height:18px;border:2px solid #3a3a4a;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.7rem}
+.nav-item.completed .nav-check{border-color:#22c55e;color:#22c55e}
+.main{margin-left:260px;flex:1;padding:24px 36px;max-width:760px}
+.section{display:none}
+.section.active{display:block}
+.section h2{font-size:1.5rem;margin-bottom:16px;color:#e0e0e8}
+.section h3{font-size:1.1rem;margin:20px 0 10px;color:#c0c0d0}
+.section p{color:#b0b0be;margin-bottom:12px;font-size:0.92rem}
+.example-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.example-box{background:#12121a;border-radius:8px;padding:14px;border:1px solid #2a2a3a;font-size:0.84rem}
+.example-box.bad{border-color:#3b1515}
+.example-box.good{border-color:#153b1e}
+.example-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600}
+.example-box.bad .example-label{color:#ef4444}
+.example-box.good .example-label{color:#22c55e}
+.example-box pre{white-space:pre-wrap;font-family:'SF Mono',Menlo,monospace;font-size:0.82rem;color:#c0c0d0;line-height:1.5}
+.best-practices{background:#12121a;border:1px solid #2a2a3a;border-radius:10px;padding:18px;margin:16px 0}
+.best-practices li{padding:5px 0;font-size:0.88rem;color:#b0b0be;list-style:none}
+.best-practices li::before{content:"&#10003; ";color:#22c55e}
+.quiz-box{background:#0e0e18;border:1px solid #2a2a3a;border-radius:10px;padding:20px;margin:20px 0}
+.quiz-box h4{color:#a78bfa;margin-bottom:12px;font-size:0.95rem}
+.quiz-option{display:block;padding:10px 14px;margin:6px 0;background:#12121a;border:1px solid #2a2a3a;border-radius:8px;cursor:pointer;font-size:0.88rem;transition:all .15s}
+.quiz-option:hover{border-color:#a78bfa}
+.quiz-option.correct{border-color:#22c55e;background:rgba(34,197,94,0.08)}
+.quiz-option.wrong{border-color:#ef4444;background:rgba(239,68,68,0.08)}
+.quiz-feedback{margin-top:10px;font-size:0.85rem;padding:8px 12px;border-radius:6px;display:none}
+.checker-box{background:#0e0e18;border:1px solid #2a2a3a;border-radius:10px;padding:20px;margin:20px 0}
+.checker-box h4{color:#f59e0b;margin-bottom:10px;font-size:0.95rem}
+.checker-box textarea{width:100%;height:100px;background:#12121a;border:1px solid #2a2a3a;border-radius:8px;color:#e0e0e8;font-size:0.85rem;padding:12px;resize:vertical;font-family:inherit}
+.checker-box textarea:focus{outline:none;border-color:#f59e0b}
+.checker-btn{margin-top:10px;padding:8px 20px;background:#f59e0b;color:#0a0a0f;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:0.85rem}
+.checker-result{margin-top:12px;font-size:0.85rem;color:#b0b0be}
+.checker-result div{padding:4px 0}
+.complete-btn{margin-top:20px;padding:10px 24px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.9rem;transition:opacity .2s}
+.complete-btn:hover{opacity:0.9}
+.complete-btn.done{background:#1e1e2e;color:#22c55e;cursor:default}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#0e0e16;border-top:1px solid #1e1e2e;padding:10px 16px;z-index:20}
+.mobile-nav button{padding:8px 16px;background:#1e1e2e;color:#e0e0e8;border:none;border-radius:6px;font-size:0.82rem;cursor:pointer}
+.branding{text-align:center;padding:30px 0;border-top:1px solid #1a1a2a;margin-top:40px}
+.branding a{color:#f59e0b;text-decoration:none}
+.branding a:hover{text-decoration:underline}
+.branding p{color:#6b7280;font-size:0.85rem;margin-top:6px}
+.cta-link{display:inline-block;margin-top:12px;padding:10px 24px;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.9rem;transition:opacity .2s}
+.cta-link:hover{opacity:0.9;text-decoration:none}
+.hamburger{display:none;position:fixed;top:12px;left:12px;z-index:30;background:#1e1e2e;border:none;color:#e0e0e8;font-size:1.4rem;padding:6px 10px;border-radius:6px;cursor:pointer}
+@media(max-width:768px){
+.sidebar{transform:translateX(-100%);transition:transform .3s}
+.sidebar.open{transform:translateX(0)}
+.main{margin-left:0;padding:20px 16px;padding-top:50px}
+.example-grid{grid-template-columns:1fr}
+.hamburger{display:block}
+.mobile-nav{display:flex;gap:8px;justify-content:center}
+}
+</style>
+</head>
+<body>
+<button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+<div class="sidebar-header">
+<div class="sidebar-title">Developer Writing Guide</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="progress-text" id="progressText">0 of 10 completed</div>
+</div>
+<nav id="nav"></nav>
+</aside>
+<div class="main" id="main"></div>
+</div>
+<div class="mobile-nav">
+<button onclick="DWG.prev()">&#8592; Previous</button>
+<button onclick="DWG.next()">Next &#8594;</button>
+</div>
+<script>
+var DWG = (function(){
+"use strict";
+
+var SECTIONS = [
+{id:"readme",title:"README Structure",content:
+'<h2>README Structure</h2><p>A README is the first thing developers see. A well-structured README saves time and drives adoption.</p><h3>Best Practices</h3><ul class="best-practices"><li>Start with a one-line description of what the project does</li><li>Include installation instructions (copy-paste ready)</li><li>Show a minimal usage example within 30 seconds of reading</li><li>List prerequisites and requirements</li><li>Add badges for build status, version, and license</li><li>Include a table of contents for READMEs over 100 lines</li></ul><div class="example-grid"><div class="example-box bad"><div class="example-label">Bad</div><pre>## My Project\nThis is a project I made.\nTo use it, install it and run it.</pre></div><div class="example-box good"><div class="example-label">Good</div><pre>## fast-cache\nIn-memory LRU cache for Node.js with TTL support.\n\n### Install\nnpm install fast-cache\n\n### Quick Start\nconst cache = require(\'fast-cache\')({max: 100})\ncache.set(\'key\', \'value\', 60) // TTL: 60s</pre></div></div>',
+quiz:{q:"Which is the most important part of a README?",opts:["License file","Quick start example within 30 seconds","Full API reference","Contributor guidelines"],answer:1,explain:"Developers want to see if the project works for them ASAP. A quick start example is the most critical section."},
+checker:{prompt:"Paste your README intro (first 5 lines):",rules:[{re:/^#/,"pass":"Has a heading","fail":"Missing heading — start with # Project Name"},{re:/install|npm|pip|brew|yarn/i,"pass":"Mentions installation","fail":"Consider adding install instructions"},{re:/example|usage|start|import|require/i,"pass":"References usage/examples","fail":"Add a quick usage example"}]}},
+
+{id:"api",title:"API Documentation",content:
+'<h2>API Documentation</h2><p>Good API docs reduce support tickets. Developers read them when they\'re stuck — make them scannable.</p><h3>Best Practices</h3><ul class="best-practices"><li>Document every public method with params, return type, and example</li><li>Show request/response pairs for REST APIs</li><li>Include error responses, not just success cases</li><li>Use consistent formatting: method, params table, example, notes</li><li>Add "Try It" examples with curl or code snippets</li></ul><div class="example-grid"><div class="example-box bad"><div class="example-label">Bad</div><pre>getUser(id)\nGets a user.\nReturns user object.</pre></div><div class="example-box good"><div class="example-label">Good</div><pre>### getUser(id: string): Promise&lt;User&gt;\n\nFetch a user by their unique ID.\n\n| Param | Type   | Required |\n|-------|--------|----------|\n| id    | string | Yes      |\n\nReturns: User object or throws 404.\n\nExample:\nconst user = await getUser("abc123")\n// { id: "abc123", name: "Alice" }</pre></div></div>',
+quiz:{q:"What should API docs include besides the happy path?",opts:["Only success responses","Error responses and edge cases","Internal implementation details","Performance benchmarks"],answer:1,explain:"Developers hit errors more than success. Documenting error responses and edge cases saves them hours of debugging."},
+checker:{prompt:"Paste an API method doc:",rules:[{re:/param|parameter|argument/i,"pass":"Documents parameters","fail":"List parameters with types"},{re:/return|response|output/i,"pass":"Describes return value","fail":"Describe what the method returns"},{re:/example|sample|usage/i,"pass":"Includes example","fail":"Add a code example"},{re:/error|throw|exception|404|400|500/i,"pass":"Mentions errors","fail":"Document error cases"}]}},
+
+{id:"errors",title:"Error Messages",content:
+'<h2>Error Messages</h2><p>Good error messages tell users what happened, why, and how to fix it. Bad errors leave them guessing.</p><h3>Best Practices</h3><ul class="best-practices"><li>State what went wrong in plain language</li><li>Explain why it happened if possible</li><li>Tell the user how to fix it</li><li>Include relevant values (file path, variable name)</li><li>Never expose internal stack traces to end users</li><li>Use consistent error codes for programmatic handling</li></ul><div class="example-grid"><div class="example-box bad"><div class="example-label">Bad</div><pre>Error: ENOENT\nError: null reference exception\nError: Something went wrong</pre></div><div class="example-box good"><div class="example-label">Good</div><pre>Error: Config file not found at ./config.yml\n\nThe application requires a config.yml file\nin the project root.\n\nFix: Run "app init" to generate a default\nconfig, or copy config.example.yml to\nconfig.yml</pre></div></div>',
+quiz:{q:"What makes an error message most useful?",opts:["A stack trace","A numeric error code","What went wrong + how to fix it","The timestamp of the error"],answer:2,explain:"Users need to know what went wrong AND how to fix it. A stack trace helps developers but not end users."},
+checker:{prompt:"Paste an error message:",rules:[{re:/not found|failed|invalid|cannot|unable|missing/i,"pass":"States what went wrong","fail":"Clearly state what went wrong"},{re:/fix|try|run|check|ensure|make sure|solution/i,"pass":"Suggests a fix","fail":"Tell the user how to fix the error"},{re:/\w{3,}\.\w{2,}|\/\w+|"\w+"/,"pass":"Includes specific values","fail":"Include specific values (file names, variables)"}]}},
+
+{id:"commits",title:"Commit Messages",content:
+'<h2>Commit Messages</h2><p>Commit messages are your project\'s changelog. Write them for the developer reading git log 6 months from now.</p><h3>Best Practices</h3><ul class="best-practices"><li>Use imperative mood: "Add feature" not "Added feature"</li><li>Keep the subject line under 72 characters</li><li>Separate subject from body with a blank line</li><li>Explain WHY, not just WHAT (the diff shows what)</li><li>Reference issue numbers when applicable</li><li>Use conventional commits (feat:, fix:, docs:, refactor:)</li></ul><div class="example-grid"><div class="example-box bad"><div class="example-label">Bad</div><pre>fixed stuff\nupdated code\nwip\nfinal version\nfinal final version v2</pre></div><div class="example-box good"><div class="example-label">Good</div><pre>fix: prevent race condition in user login\n\nThe login handler was not awaiting the\nsession check, causing intermittent 401s\nunder high concurrency.\n\nCloses #1234</pre></div></div>',
+quiz:{q:"What tense should commit messages use?",opts:["Past tense: \"Fixed the bug\"","Present tense: \"Fixes the bug\"","Imperative: \"Fix the bug\"","Future: \"Will fix the bug\""],answer:2,explain:"Imperative mood matches git's own convention (\"Merge branch\", \"Revert commit\"). Think of it as completing: \"This commit will...\""},
+checker:{prompt:"Paste a commit message:",rules:[{re:/^(feat|fix|docs|refactor|test|chore|style|perf|ci|build)(\(.+\))?:/m,"pass":"Uses conventional commit prefix","fail":"Start with a type: feat:, fix:, docs:, etc."},{re:/^.{1,72}$/m,"pass":"Subject line under 72 chars","fail":"Keep the first line under 72 characters"},{re:/because|since|prevent|ensure|avoid|so that|closes? #/i,"pass":"Explains the why","fail":"Explain WHY this change is needed"}]}},
+
+{id:"prs",title:"PR Descriptions",content:
+'<h2>PR Descriptions</h2><p>A good PR description helps reviewers understand context. It saves review time and catches issues early.</p><h3>Best Practices</h3><ul class="best-practices"><li>Start with a 1-2 sentence summary of what and why</li><li>List changes as bullet points</li><li>Include screenshots for UI changes</li><li>Add testing instructions</li><li>Link related issues</li><li>Call out areas that need careful review</li></ul><div class="example-grid"><div class="example-box bad"><div class="example-label">Bad</div><pre>Fixed the thing.\n\nPlease review.</pre></div><div class="example-box good"><div class="example-label">Good</div><pre>## Summary\nFix race condition in login flow that\ncaused intermittent 401 errors (#1234)\n\n## Changes\n- Add mutex lock to session check\n- Add retry logic with exponential backoff\n- Add integration test for concurrent logins\n\n## Testing\n1. Run: npm test -- --grep "login"\n2. Load test: k6 run login-test.js\n\n## Notes\nThe mutex in auth.js:42 needs careful review.</pre></div></div>',
+quiz:{q:"What should a PR description always include?",opts:["The full git log","Summary + testing instructions","A list of all files changed","The time spent on the PR"],answer:1,explain:"Reviewers need context (summary) and a way to verify the change (testing instructions). The diff shows the files."},
+checker:{prompt:"Paste a PR description:",rules:[{re:/summary|overview|what|why/i,"pass":"Has a summary section","fail":"Add a Summary section"},{re:/test|verify|QA|how to check/i,"pass":"Includes testing info","fail":"Add testing instructions"},{re:/change|update|add|remove|fix/i,"pass":"Lists changes","fail":"List what changed as bullet points"}]}},
+
+{id:"comments",title:"Code Comments",content:
+'<h2>Code Comments</h2><p>Comments should explain WHY, not WHAT. The code already says what it does — tell readers why it does it that way.</p><h3>Best Practices</h3><ul class="best-practices"><li>Explain WHY, not WHAT (the code shows what)</li><li>Document non-obvious decisions and trade-offs</li><li>Use TODO/FIXME/HACK with ticket numbers</li><li>Keep comments up to date when code changes</li><li>Use JSDoc/docstrings for public APIs</li><li>Delete commented-out code (that is what git is for)</li></ul><div class="example-grid"><div class="example-box bad"><div class="example-label">Bad</div><pre>// increment i\ni++;\n\n// check if user exists\nif (user) { ... }\n\n// TODO: fix this later\n// oldFunction();\n// moreOldCode();</pre></div><div class="example-box good"><div class="example-label">Good</div><pre>// Retry up to 3 times because the payment\n// gateway returns transient 503s under load.\n// See incident report: INC-2847\nfor (let attempt = 0; attempt < 3; attempt++)\n\n// HACK(#4521): Offset by 1 because the API\n// returns 1-indexed pages but our UI is 0-indexed</pre></div></div>',
+quiz:{q:"When should you write a code comment?",opts:["For every line of code","Only for functions","When the WHY is not obvious from the code","Never, code should be self-documenting"],answer:2,explain:"Comments are valuable when they explain non-obvious reasoning. Obvious code does not need comments, but tricky logic does."},
+checker:{prompt:"Paste a code comment:",rules:[{re:/because|since|reason|workaround|hack|note|why|incident|see/i,"pass":"Explains the reasoning","fail":"Explain WHY, not WHAT"},{re:/TODO|FIXME|HACK|BUG|XXX/,"pass":"Uses standard tags","fail":"Use TODO/FIXME/HACK for action items"},{re:/#\d+|[A-Z]+-\d+|ticket|issue|jira/i,"pass":"References a ticket/issue","fail":"Link to a ticket or issue number"}]}},
+
+{id:"changelogs",title:"Changelogs",content:
+'<h2>Changelogs</h2><p>Changelogs help users understand what changed between versions. They are essential for library and API maintainers.</p><h3>Best Practices</h3><ul class="best-practices"><li>Follow Keep a Changelog format (keepachangelog.com)</li><li>Group by: Added, Changed, Deprecated, Removed, Fixed, Security</li><li>Write for users, not developers (skip internal refactors)</li><li>Include migration guides for breaking changes</li><li>Link to PRs/issues for each entry</li><li>Use semantic versioning consistently</li></ul><div class="example-grid"><div class="example-box bad"><div class="example-label">Bad</div><pre>v2.0\n- lots of changes\n- updated stuff\n- fixed bugs</pre></div><div class="example-box good"><div class="example-label">Good</div><pre>## [2.0.0] - 2025-03-15\n### Breaking Changes\n- `getUser()` now returns a Promise (#234)\n  Migration: Add `await` to all getUser calls\n\n### Added\n- Batch API for bulk operations (#256)\n- Rate limiting with configurable limits\n\n### Fixed\n- Memory leak in WebSocket handler (#249)</pre></div></div>',
+quiz:{q:"What should changelogs skip?",opts:["Breaking changes","Internal refactors with no user impact","Security fixes","New features"],answer:1,explain:"Changelogs are for users. Internal refactors that do not change behavior are noise — save those for commit messages."},
+checker:{prompt:"Paste a changelog entry:",rules:[{re:/\d+\.\d+/,"pass":"Includes version number","fail":"Include a version number (e.g., 2.1.0)"},{re:/added|changed|fixed|removed|security|breaking|deprecated/i,"pass":"Uses standard categories","fail":"Group changes: Added, Changed, Fixed, etc."},{re:/#\d+|\(\d+\)/,"pass":"References issues/PRs","fail":"Link to issues or PRs"}]}},
+
+{id:"tutorials",title:"Tutorial Writing",content:
+'<h2>Tutorial Writing</h2><p>Tutorials guide learners step-by-step. A good tutorial gets someone from zero to working in one sitting.</p><h3>Best Practices</h3><ul class="best-practices"><li>State prerequisites at the top</li><li>Number every step sequentially</li><li>Show expected output after each step</li><li>Include the complete final code at the end</li><li>Test your tutorial on a fresh machine</li><li>Keep scope narrow — one tutorial, one concept</li></ul><div class="example-grid"><div class="example-box bad"><div class="example-label">Bad</div><pre>Set up the database and configure\nthe app. Then deploy it.\n\nYou should see it working now.</pre></div><div class="example-box good"><div class="example-label">Good</div><pre>Prerequisites: Node 18+, PostgreSQL 14+\n\nStep 1: Create the project\n$ mkdir my-api && cd my-api\n$ npm init -y\n\nExpected: package.json created\n\nStep 2: Install dependencies\n$ npm install express pg\n\nExpected: node_modules/ folder appears</pre></div></div>',
+quiz:{q:"What is the most common tutorial mistake?",opts:["Too many screenshots","Skipping steps the author considers obvious","Too many code examples","Making it too long"],answer:1,explain:"Authors skip steps they find obvious because they already know the tool. Always test on a fresh setup."},
+checker:{prompt:"Paste your tutorial intro:",rules:[{re:/prerequisite|require|need|before you begin|setup/i,"pass":"Lists prerequisites","fail":"State prerequisites at the top"},{re:/step|1\.|first/i,"pass":"Uses numbered steps","fail":"Number your steps sequentially"},{re:/expect|output|result|see|should/i,"pass":"Shows expected output","fail":"Show expected output after steps"}]}},
+
+{id:"i18n",title:"i18n Best Practices",content:
+'<h2>Internationalization (i18n) Best Practices</h2><p>Writing for a global audience requires intentional choices. Your docs will be read — and translated — worldwide.</p><h3>Best Practices</h3><ul class="best-practices"><li>Use simple, direct language (subject-verb-object)</li><li>Avoid idioms, slang, and cultural references</li><li>Do not hardcode strings — use translation keys</li><li>Design UI for text expansion (translations can be 40% longer)</li><li>Use Unicode and UTF-8 everywhere</li><li>Support RTL layouts for Arabic, Hebrew, etc.</li></ul><div class="example-grid"><div class="example-box bad"><div class="example-label">Bad</div><pre>This feature is a piece of cake!\nLet\'s knock this out real quick.\nThe ball is in your court now.</pre></div><div class="example-box good"><div class="example-label">Good</div><pre>This feature is simple to use.\nComplete this task in three steps.\nYou can now make your choice.</pre></div></div>',
+quiz:{q:"Why should you avoid idioms in technical writing?",opts:["They make text longer","They do not translate across languages","They are informal","They are hard to spell"],answer:1,explain:"Idioms like \"piece of cake\" or \"ball is in your court\" have no direct translation in most languages and confuse non-native readers."},
+checker:{prompt:"Paste text to check for i18n issues:",rules:[{re:/piece of cake|knock.+out|ball is in|hit the ground|under the weather|break a leg|no brainer|at the end of the day/i,"fail":"Idiom detected — use simpler language","pass":""},{re:/real quick|gonna|wanna|gotta|kinda|y'all|ain't/i,"fail":"Informal language detected — use standard English","pass":""},{re:/click here|this page|above|below|left|right/i,"fail":"Positional reference detected — may not work in RTL layouts","pass":""}]}},
+
+{id:"nonnative",title:"Writing for Non-Native Speakers",content:
+'<h2>Writing for Non-Native Speakers</h2><p>Most developers worldwide are not native English speakers. Clear, simple writing helps everyone — including native speakers.</p><h3>Best Practices</h3><ul class="best-practices"><li>Use short sentences (15-20 words max)</li><li>One idea per sentence</li><li>Prefer common words over fancy synonyms</li><li>Use active voice ("The function returns X" not "X is returned")</li><li>Define acronyms on first use</li><li>Use consistent terminology — one word per concept</li></ul><div class="example-grid"><div class="example-box bad"><div class="example-label">Bad</div><pre>The aforementioned functionality\nfacilitates the instantiation of\na myriad of objects, thereby\nenabling the utilization of\npolymorphic dispatch mechanisms.</pre></div><div class="example-box good"><div class="example-label">Good</div><pre>This function creates objects.\nEach object type has its own\nbehavior. The system calls the\ncorrect method based on the\nobject type.</pre></div></div>',
+quiz:{q:"Which word is better for non-native readers?",opts:["Utilize","Facilitate","Use","Instantiate"],answer:2,explain:"\"Use\" is understood by virtually all English learners. \"Utilize\" and \"facilitate\" add complexity without adding meaning."},
+checker:{prompt:"Paste text to check clarity for non-native readers:",rules:[{re:/\b(utilize|facilitate|aforementioned|myriad|thereby|herein|henceforth|notwithstanding|wherein|instantiate)\b/i,"fail":"Complex word detected — use simpler alternative","pass":""},{re:/\b(is|are|was|were|been|being)\s+\w+(ed|en)\b/i,"fail":"Passive voice detected — use active voice","pass":""},{re:/[^.!?]{120,}/,"fail":"Long sentence detected — break into shorter ones","pass":""}]}}
+];
+
+var completed = {};
+var currentIdx = 0;
+
+try {
+  var saved = localStorage.getItem("dwg_completed");
+  if (saved) { completed = JSON.parse(saved); }
+} catch(e) { /* ignore */ }
+
+function saveProgress() {
+  try { localStorage.setItem("dwg_completed", JSON.stringify(completed)); } catch(e) { /* ignore */ }
+}
+
+function renderNav() {
+  var nav = document.getElementById("nav");
+  var html = "";
+  for (var i = 0; i < SECTIONS.length && i < 20; i++) {
+    var s = SECTIONS[i];
+    var cls = (i === currentIdx ? " active" : "") + (completed[s.id] ? " completed" : "");
+    html += '<div class="nav-item' + cls + '" data-idx="' + i + '"><span class="nav-check">' + (completed[s.id] ? "&#10003;" : (i + 1)) + '</span><span>' + s.title + '</span></div>';
+  }
+  nav.innerHTML = html;
+  var items = nav.querySelectorAll(".nav-item");
+  for (var j = 0; j < items.length && j < 20; j++) {
+    items[j].addEventListener("click", (function(idx) { return function() { goTo(idx); }; })(j));
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  var count = Object.keys(completed).length;
+  document.getElementById("progressFill").style.width = (count / SECTIONS.length * 100) + "%";
+  document.getElementById("progressText").textContent = count + " of " + SECTIONS.length + " completed";
+}
+
+function renderSection(idx) {
+  console.assert(idx >= 0 && idx < SECTIONS.length, "renderSection: idx out of bounds");
+  var s = SECTIONS[idx];
+  var html = '<div class="section active">' + s.content;
+
+  /* Quiz */
+  if (s.quiz) {
+    html += '<div class="quiz-box"><h4>Quick Quiz</h4><p>' + s.quiz.q + '</p>';
+    for (var i = 0; i < s.quiz.opts.length && i < 10; i++) {
+      html += '<div class="quiz-option" data-idx="' + i + '" data-section="' + s.id + '">' + s.quiz.opts[i] + '</div>';
+    }
+    html += '<div class="quiz-feedback" id="qf_' + s.id + '"></div></div>';
+  }
+
+  /* Checker */
+  if (s.checker) {
+    html += '<div class="checker-box"><h4>Check Your Writing</h4><p>' + s.checker.prompt + '</p><textarea id="chk_' + s.id + '" placeholder="Paste your text here..."></textarea><button class="checker-btn" data-section="' + s.id + '">Analyze</button><div class="checker-result" id="cr_' + s.id + '"></div></div>';
+  }
+
+  /* Complete button */
+  var isDone = completed[s.id];
+  html += '<button class="complete-btn' + (isDone ? " done" : "") + '" data-section="' + s.id + '">' + (isDone ? "&#10003; Completed" : "Mark as Complete") + '</button>';
+
+  html += '<div class="branding"><p><strong>Powered by <a href="https://belikenative.com" target="_blank" rel="noopener">BeLikeNative</a></strong> — AI writing tools for 100+ languages</p><p>Write clear technical docs in any language with AI-powered assistance</p><a class="cta-link" href="https://chromewebstore.google.com/detail/belikenative-ai-grammar-w/dgodddelmdkhanlhcfhiieegpmpjfgao" target="_blank" rel="noopener">Get the Chrome Extension — Free</a></div>';
+  html += '</div>';
+
+  document.getElementById("main").innerHTML = html;
+
+  /* Wire quiz */
+  var quizOpts = document.querySelectorAll('.quiz-option');
+  for (var q = 0; q < quizOpts.length && q < 20; q++) {
+    quizOpts[q].addEventListener("click", handleQuiz);
+  }
+
+  /* Wire checker */
+  var checkerBtns = document.querySelectorAll('.checker-btn');
+  for (var c = 0; c < checkerBtns.length && c < 10; c++) {
+    checkerBtns[c].addEventListener("click", handleChecker);
+  }
+
+  /* Wire complete */
+  var completeBtns = document.querySelectorAll('.complete-btn');
+  for (var b = 0; b < completeBtns.length && b < 10; b++) {
+    completeBtns[b].addEventListener("click", handleComplete);
+  }
+}
+
+function handleQuiz(e) {
+  var opt = e.currentTarget;
+  var sectionId = opt.getAttribute("data-section");
+  var chosenIdx = parseInt(opt.getAttribute("data-idx"), 10);
+  var section = null;
+  for (var i = 0; i < SECTIONS.length; i++) {
+    if (SECTIONS[i].id === sectionId) { section = SECTIONS[i]; break; }
+  }
+  if (!section || !section.quiz) { return; }
+
+  var allOpts = document.querySelectorAll('.quiz-option[data-section="' + sectionId + '"]');
+  for (var j = 0; j < allOpts.length && j < 10; j++) {
+    allOpts[j].classList.remove("correct", "wrong");
+    if (parseInt(allOpts[j].getAttribute("data-idx"), 10) === section.quiz.answer) {
+      allOpts[j].classList.add("correct");
+    } else if (parseInt(allOpts[j].getAttribute("data-idx"), 10) === chosenIdx) {
+      allOpts[j].classList.add("wrong");
+    }
+  }
+  var fb = document.getElementById("qf_" + sectionId);
+  fb.style.display = "block";
+  fb.style.background = chosenIdx === section.quiz.answer ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)";
+  fb.style.color = chosenIdx === section.quiz.answer ? "#22c55e" : "#ef4444";
+  fb.textContent = (chosenIdx === section.quiz.answer ? "Correct! " : "Not quite. ") + section.quiz.explain;
+}
+
+function handleChecker(e) {
+  var sectionId = e.currentTarget.getAttribute("data-section");
+  var section = null;
+  for (var i = 0; i < SECTIONS.length; i++) {
+    if (SECTIONS[i].id === sectionId) { section = SECTIONS[i]; break; }
+  }
+  if (!section || !section.checker) { return; }
+
+  var text = document.getElementById("chk_" + sectionId).value;
+  if (text.trim().length < 3) { return; }
+
+  var html = "";
+  var rules = section.checker.rules;
+  for (var r = 0; r < rules.length && r < 20; r++) {
+    var match = rules[r].re.test(text);
+    if (match && rules[r].pass) {
+      html += '<div style="color:#22c55e">&#10003; ' + rules[r].pass + '</div>';
+    } else if (!match && rules[r].fail) {
+      html += '<div style="color:#f59e0b">&#9888; ' + rules[r].fail + '</div>';
+    } else if (match && rules[r].fail) {
+      html += '<div style="color:#ef4444">&#10007; ' + rules[r].fail + '</div>';
+    }
+  }
+  if (html === "") { html = '<div style="color:#22c55e">&#10003; Looks good! No issues detected.</div>'; }
+  document.getElementById("cr_" + sectionId).innerHTML = html;
+}
+
+function handleComplete(e) {
+  var sectionId = e.currentTarget.getAttribute("data-section");
+  if (completed[sectionId]) {
+    delete completed[sectionId];
+    e.currentTarget.textContent = "Mark as Complete";
+    e.currentTarget.classList.remove("done");
+  } else {
+    completed[sectionId] = true;
+    e.currentTarget.innerHTML = "&#10003; Completed";
+    e.currentTarget.classList.add("done");
+  }
+  saveProgress();
+  renderNav();
+}
+
+function goTo(idx) {
+  console.assert(idx >= 0 && idx < SECTIONS.length, "goTo: idx out of bounds");
+  currentIdx = idx;
+  renderNav();
+  renderSection(idx);
+  window.scrollTo(0, 0);
+  /* Close mobile sidebar */
+  document.getElementById("sidebar").classList.remove("open");
+}
+
+function next() {
+  if (currentIdx < SECTIONS.length - 1) { goTo(currentIdx + 1); }
+}
+
+function prev() {
+  if (currentIdx > 0) { goTo(currentIdx - 1); }
+}
+
+/* Hamburger */
+document.getElementById("hamburger").addEventListener("click", function() {
+  document.getElementById("sidebar").classList.toggle("open");
+});
+
+/* Init */
+renderNav();
+renderSection(0);
+
+return { next: next, prev: prev };
+})();
+</script>
+</body>
+</html>
